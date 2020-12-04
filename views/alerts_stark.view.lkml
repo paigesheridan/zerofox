@@ -233,20 +233,35 @@ view: alerts_stark {
     sql: ${TABLE}.Tags ;;
   }
 
-  dimension: takedown_accepted {
-    type: string
-    sql: ${TABLE}.Takedown_Accepted ;;
+  dimension_group: takedown_accepted {
+    type: time
+    timeframes: [raw,time,date,week]
+    sql:  CASE WHEN ${TABLE}.takedown_accepted = "N/A" THEN null ELSE TIMESTAMP(${TABLE}.takedown_accepted) END ;;
   }
 
-  dimension: takedown_denied {
-    type: string
-    sql: ${TABLE}.Takedown_Denied ;;
+  dimension_group: takedown_denied {
+    type: time
+    timeframes: [raw,time,date,week]
+    sql:  CASE WHEN ${TABLE}.Takedown_Denied = "N/A" THEN null ELSE TIMESTAMP(${TABLE}.Takedown_Denied) END;;
   }
 
   dimension_group: takedown_requested {
     type: time
     timeframes: [raw,time,date,week]
-    sql: PARSE_TIMESTAMP('%Y-%m-%dT%H:%M:%EZ',${TABLE}.Takedown_Requested );;
+    sql: CASE WHEN ${TABLE}.takedown_requested = "N/A" THEN null ELSE TIMESTAMP(${TABLE}.takedown_requested) END;;
+  }
+
+  dimension: time_to_takedown {
+    label: "Time to Takedown"
+    type: number
+    sql:TIMESTAMP_DIFF(${takedown_accepted_raw},${takedown_requested_raw},minute) ;;
+  }
+
+  measure: average_time_to_takedown {
+    label: "Average Time to Takedown (in minutes)"
+    type: average
+    sql: ${time_to_takedown} ;;
+    value_format_name: decimal_1
   }
 
   dimension: typosquatting_strategy_name {
