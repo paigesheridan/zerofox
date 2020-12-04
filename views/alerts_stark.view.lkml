@@ -223,6 +223,17 @@ view: alerts_stark {
     value_format_name: percent_1
   }
 
+  measure: count_high_alerts {
+    type: count
+    filters: [severity: "High"]
+  }
+
+  measure: percent_high_alerts {
+    type: number
+    sql: 1.0*${count_high_alerts}/nullif(${count},0) ;;
+    value_format_name: percent_1
+  }
+
   dimension: status {
     type: string
     sql: ${TABLE}.Status ;;
