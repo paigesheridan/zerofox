@@ -263,15 +263,28 @@ view: alerts_stark {
   }
 
   dimension: time_to_takedown {
-    label: "Time to Takedown"
+    label: "Time to Takedown (in minutes)"
     type: number
     sql:TIMESTAMP_DIFF(${takedown_accepted_raw},${takedown_requested_raw},minute) ;;
+  }
+
+  dimension: hours_to_takedown {
+    label: "Time to Takedown (in hours"
+    type: number
+    sql:TIMESTAMP_DIFF(${takedown_accepted_raw},${takedown_requested_raw},hour) ;;
   }
 
   measure: average_time_to_takedown {
     label: "Average Time to Takedown (in minutes)"
     type: average
     sql: ${time_to_takedown} ;;
+    value_format_name: decimal_1
+  }
+
+  measure: average_hours_to_takedown {
+    label: "Average Time to Takedown (in hours)"
+    type: average
+    sql: ${hours_to_takedown} ;;
     value_format_name: decimal_1
   }
 
