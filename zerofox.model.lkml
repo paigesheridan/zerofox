@@ -19,7 +19,13 @@ include: "/views/*.view.lkml"                # include all views in the views/ f
 #   }
 # }
 
+access_grant: network_grant {
+  user_attribute: network
+  allowed_values: ["twitter"]
+}
+
 explore: alerts_stark {
+  required_access_grants: [network_grant]
   access_filter: {
     user_attribute: network
     field: network_name
