@@ -19,4 +19,9 @@ include: "/views/*.view.lkml"                # include all views in the views/ f
 #   }
 # }
 
-explore: alerts_stark {}
+explore: alerts_stark {
+  access_filter: {
+    user_attribute: network
+    field: network_name
+  }
+}
