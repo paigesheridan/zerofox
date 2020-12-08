@@ -25,7 +25,6 @@ access_grant: network_grant {
 }
 
 explore: alerts_stark {
-  required_access_grants: [network_grant]
   access_filter: {
     user_attribute: network
     field: network_name
